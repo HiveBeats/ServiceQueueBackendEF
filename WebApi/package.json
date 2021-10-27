@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "mig-add": "dotnet ef migrations add ",
+        "mig-del": "dotnet ef migrations remove",
+        "db-update": "dotnet ef database update"
+    }
+}
