@@ -9,7 +9,7 @@ namespace LocateBackend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Service",
+                name: "Services",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -19,17 +19,17 @@ namespace LocateBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Service", x => x.Id);
+                    table.PrimaryKey("PK_Services", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Service_Service_ParentId",
+                        name: "FK_Services_Services_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Service",
+                        principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Topic",
+                name: "Topics",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -40,17 +40,17 @@ namespace LocateBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Topic", x => x.Id);
+                    table.PrimaryKey("PK_Topics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Topic_Service_ServiceId",
+                        name: "FK_Topics_Services_ServiceId",
                         column: x => x.ServiceId,
-                        principalTable: "Service",
+                        principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
+                name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -63,47 +63,47 @@ namespace LocateBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Message_Topic_TopicId",
+                        name: "FK_Messages_Topics_TopicId",
                         column: x => x.TopicId,
-                        principalTable: "Topic",
+                        principalTable: "Topics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_TopicId",
-                table: "Message",
+                name: "IX_Messages_TopicId",
+                table: "Messages",
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Service_ParentId",
-                table: "Service",
+                name: "IX_Services_ParentId",
+                table: "Services",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Topic_Name",
-                table: "Topic",
+                name: "IX_Topics_Name",
+                table: "Topics",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Topic_ServiceId",
-                table: "Topic",
+                name: "IX_Topics_ServiceId",
+                table: "Topics",
                 column: "ServiceId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Topic");
+                name: "Topics");
 
             migrationBuilder.DropTable(
-                name: "Service");
+                name: "Services");
         }
     }
 }

@@ -25,5 +25,8 @@ namespace WebApi.Models
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Topic> Topics { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

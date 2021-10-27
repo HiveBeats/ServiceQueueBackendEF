@@ -248,7 +248,7 @@ namespace LocateBackend.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("WebApi.Models.RefreshToken", b =>
@@ -287,7 +287,7 @@ namespace LocateBackend.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Service");
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("WebApi.Models.Topic", b =>
@@ -314,7 +314,7 @@ namespace LocateBackend.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Topic");
+                    b.ToTable("Topics");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
