@@ -9,14 +9,16 @@ namespace WebApi.Models
         {
             modelBuilder.Entity<RefreshToken>().HasKey(t => new {t.AppUserId, t.TokenString});
             modelBuilder.Entity<RefreshToken>().HasIndex(t => t.ExpireAt);
-            //todo: create migration
+            
             modelBuilder.Entity<Service>().HasOne(x=> x.Parent)
                                         .WithMany(x=> x.Childs)
                                         .HasForeignKey(x=> x.ParentId)
                                         .IsRequired(false)
                                         .OnDelete(DeleteBehavior.Restrict);
             
-            modelBuilder.Entity<Topic>().HasIndex(u => u.Name).IsUnique();
+            modelBuilder.Entity<Topic>().HasIndex(t => t.Name).IsUnique();
+
+            modelBuilder.Entity<Message>().HasIndex(m => m.DateSolved);
         }
 
         public static void ConfigureIdentityModels(ModelBuilder builder)
