@@ -13,7 +13,7 @@ namespace WebApi.Features.Services.Services
     public interface IServicesService
     {
         Task<CreateServiceResponse> CreateService(CreateServiceRequest request);
-        Task<DeleteServiceResponse> DeleteService(string serviceId);
+        Task<DeleteServiceResponse> DeleteService(long serviceId);
         Task<Root> GetServiceTree();
     }
 
@@ -41,7 +41,7 @@ namespace WebApi.Features.Services.Services
             return new CreateServiceResponse(item.Entity);
         }
 
-        public async Task<DeleteServiceResponse> DeleteService(string serviceId)
+        public async Task<DeleteServiceResponse> DeleteService(long serviceId)
         {
             Service item = null;
             
