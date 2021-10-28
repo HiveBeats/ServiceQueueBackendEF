@@ -34,7 +34,7 @@ namespace WebApi.Features.Services.Services
             if (!string.IsNullOrEmpty(request.ParentId) && parent == null)
                 throw new InvalidOperationException("Выбранный родительский сервис не существует");
             
-            var item = await _db.Services.AddAsync(Service.Create(request.Name, parent));
+            var item = _db.Services.Add(Service.Create(request.Name, parent));
             
             await _db.SaveChangesAsync();
 
@@ -65,7 +65,7 @@ namespace WebApi.Features.Services.Services
 
         public async Task<Root> GetServiceTree()
         {
-            var result = await _db.Services.ToListAsync();
+            var result = await _db.Services.AsNoTracking().ToListAsync();
             return TreeService.GetTreeFromList(result.Select(x => new ServiceDto(x)));
         }
     }
