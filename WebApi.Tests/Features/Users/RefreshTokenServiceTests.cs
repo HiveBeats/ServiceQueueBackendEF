@@ -10,6 +10,7 @@ using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Tests.Features.Users
 {
@@ -23,9 +24,12 @@ namespace WebApi.Tests.Features.Users
         {
             _services = new ServiceCollection();
 
-            _services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "InMemoryDb"), 
+            _services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase(databaseName: "RefreshTokenInMemoryDb"), 
                ServiceLifetime.Scoped, 
                ServiceLifetime.Scoped);
+
+            _services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AppDbContext>();
             
             _services.AddTransient<IOptions<JwtTokenConfig>>(
                 provider => Options.Create<JwtTokenConfig>(new JwtTokenConfig()
@@ -129,6 +133,23 @@ namespace WebApi.Tests.Features.Users
                 
                 //assert
                 Assert.NotNull(principal.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Name));
+            }
+        }
+
+        [Fact]
+        public async Task DecodeJwtTokenExpiredNotValid()
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                //arrange        
+                var service = scope.ServiceProvider.GetRequiredService<IRefreshTokenService>();
+                var nowDate = DateTime.UtcNow.AddHours(-1);
+                var nameClaim = new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "John Grave");
+                
+                var result = await NormalGetToken(service, nameClaim, nowDate);
+                
+                //act && assert
+                Assert.ThrowsAny<Exception>(() => service.DecodeJwtToken(result.AccessToken, true));
             }
         }
 
