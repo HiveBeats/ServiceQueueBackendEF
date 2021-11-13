@@ -128,7 +128,7 @@ namespace WebApi.Tests.Features.Queue
                 //assert
                 var item = await db.Messages.FindAsync(messageDto.Id);
                 //todo:CREATE DATE SERVICE TO MOCK DATETIME.NOW CALLS
-                Assert.Equal(DateTime.Today.Day, item.DateSolved.Value.Day);
+                Assert.Equal(DateTime.UtcNow.Day, item.DateSolved.Value.Day);
                 Assert.Equal(DateTime.UtcNow.Hour, item.DateSolved.Value.Hour);
                 Assert.Equal(DateTime.UtcNow.Minute, item.DateSolved.Value.Minute);
             }
@@ -154,7 +154,7 @@ namespace WebApi.Tests.Features.Queue
                 //assert
                 var item = await db.Messages.FindAsync(originMessageDto.Id);
                 //todo:CREATE DATE SERVICE TO MOCK DATETIME.NOW CALLS
-                Assert.Equal(DateTime.Today.Day, item.DateSolved.Value.Day);
+                Assert.Equal(DateTime.UtcNow.Day, item.DateSolved.Value.Day);
                 Assert.Equal(DateTime.UtcNow.Hour, item.DateSolved.Value.Hour);
                 Assert.Equal(DateTime.UtcNow.Minute, item.DateSolved.Value.Minute);
             }
