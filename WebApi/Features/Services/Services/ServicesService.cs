@@ -28,10 +28,10 @@ namespace WebApi.Features.Services.Services
         public async Task<CreateServiceResponse> CreateService(CreateServiceRequest request)
         {
             Service parent = null;
-            if (!string.IsNullOrEmpty(request.ParentId))
+            if (request.ParentId.HasValue)
                 parent = await _db.Services.FindAsync(request.ParentId);
             
-            if (!string.IsNullOrEmpty(request.ParentId) && parent == null)
+            if (request.ParentId.HasValue && parent == null)
                 throw new InvalidOperationException("Выбранный родительский сервис не существует");
             
             var item = _db.Services.Add(Service.Create(request.Name, parent));

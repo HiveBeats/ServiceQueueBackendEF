@@ -6,6 +6,6 @@ namespace WebApi.Features.Services.Requests
     {
         [NotNull]
         public string Name { get; set; }
-        public string ParentId { get; set; }
+        public long? ParentId { get; set; }
     }
 }
