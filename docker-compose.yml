@@ -6,7 +6,11 @@ services:
       context: ./WebApi/
       dockerfile: ./Dockerfile
     environment:
-      ASPNETCORE_URLS: http://+:5000
+      - ASPNETCORE_URLS=http://+:5000
+      - ASPNETCORE_ConnectionStrings__QueueDb=${ASPNETCORE_ConnectionStrings__QueueDb}
+      - ASPNETCORE_jwtTokenConfig__secret=${ASPNETCORE_jwtTokenConfig__secret}
+      - ASPNETCORE_jwtTokenConfig__issuer=${ASPNETCORE_jwtTokenConfig__issuer}
+      - ASPNETCORE_jwtTokenConfig__audience=${ASPNETCORE_jwtTokenConfig__audience}
     depends_on: 
       - db
     links: 
@@ -17,8 +21,8 @@ services:
     container_name: db
     image: "mysql/mysql-server:8.0.26"
     environment:
-      MYSQL_DATABASE: queuedb
-      MYSQL_ROOT_PASSWORD: passw0rd
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./mysql:/var/lib/mysql
 
