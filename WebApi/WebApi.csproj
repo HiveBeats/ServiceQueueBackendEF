@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>LocateBackend</RootNamespace>
+        <RootNamespace>WebApi</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +15,12 @@
       <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.4.1" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.4.1" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Triggers\Requests" />
+      <Folder Include="Features\Triggers\Responses" />
+      <Folder Include="Features\Triggers\Services" />
     </ItemGroup>
 
 
