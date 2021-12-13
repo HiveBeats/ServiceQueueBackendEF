@@ -22,7 +22,7 @@ namespace UserFiller
             
             //configuration
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", true,true)
+                .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
             
