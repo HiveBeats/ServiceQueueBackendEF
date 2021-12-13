@@ -23,7 +23,7 @@ namespace UserFiller
             //configuration
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
-                .AddEnvironmentVariables()
+                .AddEnvironmentVariables(prefix: "FILLR")
                 .Build();
             
             //api setup
