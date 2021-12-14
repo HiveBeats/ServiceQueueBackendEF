@@ -44,7 +44,7 @@ namespace UserFiller
                 {
                     logger.LogInformation("FILLR requesting...");
                     
-                    var result = await client.PostAsJsonAsync($"{apiBase}/Auth/Register", user);
+                    var result = await client.PostAsJsonAsync($"{apiBase}Auth/Register", user);
                     if (result.IsSuccessStatusCode)
                     {
                         logger.LogInformation("FILLR request unsuccessfull");
