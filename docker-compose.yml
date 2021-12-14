@@ -25,4 +25,19 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./mysql:/var/lib/mysql
+  fillr:
+    container_name: fillr
+    build:
+      context: ./UserFiller/
+      dockerfile: ./Dockerfile
+    environment:
+      - FILLR__User__UserName=${FILLR__User__UserName}
+      - FILLR__User__Email=${FILLR__User__Email}
+      - FILLR__User__Password=${FILLR__User__Password}
+      - FILLR__Connection__WebApi=${FILLR__Connection__WebApi}
+    depends_on:
+      - web
+    links:
+      - web
+    
 
