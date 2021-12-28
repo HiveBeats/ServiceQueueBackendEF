@@ -13,7 +13,7 @@ namespace UserFiller
     {
         public static IConfiguration Configuration { get; set; }
         
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             //todo: setup our DI
             using (var serviceProvider = new ServiceCollection()
@@ -28,8 +28,8 @@ namespace UserFiller
                 
                 //configuration
                 Configuration = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json", true, true)
-                    .AddEnvironmentVariables(prefix: "FILLR")
+                    //.AddJsonFile("appsettings.json", true, true)
+                    .AddEnvironmentVariables(prefix: "FILLR_")
                     .Build();
             
                 //api setup
@@ -44,7 +44,7 @@ namespace UserFiller
                 {
                     logger.LogInformation("FILLR requesting...");
                     
-                    var result = await client.PostAsJsonAsync($"{apiBase}Auth/Register", user);
+                    var result = client.PostAsJsonAsync($"{apiBase}Auth/Register", user).GetAwaiter().GetResult();
                     if (result.IsSuccessStatusCode)
                     {
                         logger.LogInformation("FILLR request unsuccessfull");

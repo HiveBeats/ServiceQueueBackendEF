@@ -1,12 +1,14 @@
-﻿FROM mcr.microsoft.com/dotnet/core/runtime:3.1-alpine AS base
+﻿
+
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1-alpine AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
-COPY ["UserFiller/UserFiller.csproj", "UserFiller/"]
-RUN dotnet restore "UserFiller/UserFiller.csproj"
+COPY ["UserFiller.csproj", "./"]
+RUN dotnet restore "./UserFiller.csproj"
 COPY . .
-WORKDIR "/src/UserFiller"
+#WORKDIR "/src/UserFiller"
 RUN dotnet build "UserFiller.csproj" -c Release -o /app/build
 
 FROM build AS publish
