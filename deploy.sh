@@ -1,18 +1,13 @@
 #!/bin/bash
 
 #stop old compose
-echo "Stopping docker" 
-docker-compose down
-
-#update version
-echo "Updating packages"
-sh ./update-full.sh
-
-#build frontend
-echo "Building frontend"
-sh ./Frontend/build.sh
-
-#up compose
-echo "Running docker"
-docker-compose up
-
+if echo "Stopping docker" && docker-compose down; then
+    #update version
+    if echo "Updating packages" && sh ./update-full.sh; then
+        #build frontend
+        if echo "Building frontend" && cd ./Frontend && sh ./build-prod.sh && cd ../; then
+            #up compose
+            echo "Running docker" && docker-compose up -d
+        fi
+    fi
+fi
