@@ -2,7 +2,7 @@
 
 #stop old compose
 echo "Stopping docker" 
-docker compose down
+docker-compose down
 
 #update version
 echo "Updating packages"
@@ -14,5 +14,5 @@ sh ./Frontend/build.sh
 
 #up compose
 echo "Running docker"
-docker compose up
+docker-compose up
 
