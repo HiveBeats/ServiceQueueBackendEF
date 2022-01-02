@@ -20,13 +20,6 @@ services:
       - "5000:5000"
     entrypoint: ["/app/wait-for.sh", "db:3306", "--"]
     command: ["dotnet", "WebApi.dll"]
-    #restart: on-failure
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:5000/health_check"]
-    #   interval: 1m30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s
   db:
     container_name: db
     image: "mysql/mysql-server:8.0.26"
@@ -35,12 +28,8 @@ services:
       - MYSQL_ROOT_PASSWORD
     volumes:
       - ./mysql:/var/lib/mysql
-    # healthcheck:
-    #   test: "/usr/bin/mysql --user=root --password=${MYSQL_ROOT_PASSWORD} --execute \"SHOW DATABASES;\""
-    #   interval: 1m30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s
+    ports:
+      - "3306:3306"
   fillr:
     container_name: fillr
     build:
