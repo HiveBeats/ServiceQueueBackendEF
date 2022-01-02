@@ -6,23 +6,58 @@ services:
       context: ./WebApi/
       dockerfile: ./Dockerfile
     environment:
-      - ASPNETCORE_URLS=http://+:5000
-      - ASPNETCORE_ConnectionStrings__QueueDb=${ASPNETCORE_ConnectionStrings__QueueDb}
-      - ASPNETCORE_jwtTokenConfig__secret=${ASPNETCORE_jwtTokenConfig__secret}
-      - ASPNETCORE_jwtTokenConfig__issuer=${ASPNETCORE_jwtTokenConfig__issuer}
-      - ASPNETCORE_jwtTokenConfig__audience=${ASPNETCORE_jwtTokenConfig__audience}
+      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_URLS
+      - ASPNETCORE_ConnectionStrings__QueueDb
+      - ASPNETCORE_jwtTokenConfig__secret
+      - ASPNETCORE_jwtTokenConfig__issuer
+      - ASPNETCORE_jwtTokenConfig__audience
     depends_on: 
       - db
     links: 
       - db
     ports:
-      - "8080:5000"
+      - "5000:5000"
+    entrypoint: ["/app/wait-for.sh", "db:3306", "--"]
+    command: ["dotnet", "WebApi.dll"]
   db:
     container_name: db
     image: "mysql/mysql-server:8.0.26"
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE
+      - MYSQL_ROOT_PASSWORD
     volumes:
       - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  fillr:
+    container_name: fillr
+    build:
+      context: ./UserFiller/
+      dockerfile: ./Dockerfile
+    environment:
+      - FILLR_User__UserName
+      - FILLR_User__Email
+      - FILLR_User__Password
+      - FILLR_Connection__WebApi
+    depends_on:
+      - web
+    links:
+      - web
+    entrypoint: ["/app/wait-for.sh", "web:5000", "--"]
+    command: ["dotnet", "UserFiller.dll"]
+  front:
+    container_name: front
+    image: "nginx:alpine"
+    ports: 
+      - "80:80"
+    volumes:
+      - ./Frontend/build:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - fillr
+    links:
+      - fillr
+    
+    
 
