@@ -1,5 +1,8 @@
 #!/bin/bash
-
+#check for env
+filename=.env
+if [ -f "$filename" ];
+then
 #stop old compose
 if echo "Stopping docker" && docker-compose down; then
     #update version
@@ -10,4 +13,7 @@ if echo "Stopping docker" && docker-compose down; then
             echo "Running docker" && docker-compose up -d
         fi
     fi
+fi
+else
+echo "env file has not been found"
 fi
