@@ -28,6 +28,7 @@ services:
       - MYSQL_ROOT_PASSWORD
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./sqlinit:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
   fillr:
