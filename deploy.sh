@@ -2,12 +2,7 @@
 #check for env
 filename=.env
 if [ -f "$filename" ]; then
-    until $(curl https://raw.githubusercontent.com/HiveBeats/denvlate/main/release/denver --output denver); do
-        echo "."
-        sleep 5
-    done
-    chmod +x ./denver
-    ./denver -e .env -t ./sqlinit/01-databases.sql
+    denver -t ./sqlinit/01-databases.sql
     if ! type "docker-compose -h" > /dev/null; then
         echo "new version compose not found, trying the old one";
         if echo "Stopping docker" && docker compose down; then
