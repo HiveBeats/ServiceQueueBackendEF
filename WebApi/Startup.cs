@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebApi.Configuration;
 using Microsoft.AspNetCore.Identity;
 using WebApi.Middlewares;
+using Serilog;
 
 namespace WebApi
 {
@@ -38,6 +39,9 @@ namespace WebApi
         {
             services.AddControllers();
             var connectionString = Configuration.GetConnectionString("QueueDb");
+            
+            Log.Information(connectionString);
+
             services.AddDbContext<AppDbContext>(options => options
                 .UseMySql(connectionString)
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
