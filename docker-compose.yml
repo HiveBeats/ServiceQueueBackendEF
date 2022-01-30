@@ -29,8 +29,11 @@ services:
       - MYSQL_DATABASE
       - MYSQL_ROOT_PASSWORD
       - MYSQL_ROOT_HOST
+      - MYSQL_USER
+      - MYSQL_PASSWORD
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./sqlinit:/docker-entrypoint-initdb.d/:ro
     ports:
       - "3306:3306"
   fillr:
