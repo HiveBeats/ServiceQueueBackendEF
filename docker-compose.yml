@@ -12,6 +12,8 @@ services:
       - ASPNETCORE_jwtTokenConfig__secret
       - ASPNETCORE_jwtTokenConfig__issuer
       - ASPNETCORE_jwtTokenConfig__audience
+    volumes:
+      - ./logs/api:/app/logs
     depends_on: 
       - db
     links: 
@@ -26,9 +28,9 @@ services:
     environment:
       - MYSQL_DATABASE
       - MYSQL_ROOT_PASSWORD
+      - MYSQL_ROOT_HOST
     volumes:
       - ./mysql:/var/lib/mysql
-      - ./sqlinit:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
   fillr:
@@ -41,6 +43,8 @@ services:
       - FILLR_User__Email
       - FILLR_User__Password
       - FILLR_Connection__WebApi
+    volumes:
+      - ./logs/fillr:/app/logs
     depends_on:
       - web
     links:
