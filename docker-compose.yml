@@ -18,8 +18,8 @@ services:
       - db
     links: 
       - db
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     entrypoint: ["/app/wait-for.sh", "db:3306", "--"]
     command: ["dotnet", "WebApi.dll"]
   db:
