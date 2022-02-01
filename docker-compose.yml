@@ -34,8 +34,8 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
       - ./sqlinit:/docker-entrypoint-initdb.d/:ro
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
   fillr:
     container_name: fillr
     build:
