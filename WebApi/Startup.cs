@@ -43,7 +43,7 @@ namespace WebApi
             Log.Information(connectionString);
 
             services.AddDbContext<AppDbContext>(options => options
-                .UseMySql(connectionString)
+                .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 26)))
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
                 );
 
