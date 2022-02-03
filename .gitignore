@@ -8,3 +8,4 @@ mysql/
 .ionide/symbolCache.db
 .env
 logs/
+Frontend/
