@@ -7,3 +7,4 @@ mysql/
 .idea/
 .ionide/symbolCache.db
 .env
+logs/
