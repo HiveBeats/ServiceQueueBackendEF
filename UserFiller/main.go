@@ -35,7 +35,7 @@ func main() {
 	}
 
 	log.Printf("UserFiller requested...")
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(payload))
+	resp, err := http.Post(url + "Auth/Register", "application/json", bytes.NewBuffer(payload))
 	if err != nil {
 		log.Fatal(err)
 		return
