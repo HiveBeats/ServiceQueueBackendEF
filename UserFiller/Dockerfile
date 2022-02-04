@@ -1,21 +1,18 @@
 ﻿
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/runtime-deps:6.0-alpine-amd64 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS publish
 WORKDIR /src
 COPY ["UserFiller.csproj", "./"]
-RUN dotnet restore "./UserFiller.csproj"
+RUN dotnet restore "./UserFiller.csproj" -r linux-musl-x64
 COPY . .
 #WORKDIR "/src/UserFiller"
-RUN dotnet build "UserFiller.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "UserFiller.csproj" -c Release -o /app/publish
+RUN dotnet publish "UserFiller.csproj" -r linux-musl-x64 --self-contained true -c Release -o /app/publish /p:PublishTrimmed=true /p:PublishReadyToRun=true
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-COPY wait-for.sh .
-ENTRYPOINT ["dotnet", "UserFiller.dll"]
+COPY --from=publish /app/publish ./
+COPY wait-for.sh ./
+ENTRYPOINT ["./UserFiller"]
