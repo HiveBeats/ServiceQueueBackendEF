@@ -61,7 +61,7 @@ services:
     links:
       - web
     entrypoint: ["/app/wait-for.sh", "web:5000", "--"]
-    command: ["dotnet", "UserFiller.dll"]
+    command: ["UserFiller"]
   front:
     container_name: front
     image: "nginx:alpine"
