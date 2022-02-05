@@ -1,21 +1,11 @@
-﻿
+﻿FROM golang:alpine as builder
+WORKDIR /app 
+COPY ["main.go", "./"]
+COPY ["go.mod", "./"]
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o publish/UserFiller -ldflags="-w -s" .
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine AS base
+FROM alpine:latest
 WORKDIR /app
-
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["UserFiller.csproj", "./"]
-RUN dotnet restore "./UserFiller.csproj"
-COPY . .
-#WORKDIR "/src/UserFiller"
-RUN dotnet build "UserFiller.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "UserFiller.csproj" -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-COPY wait-for.sh .
-ENTRYPOINT ["dotnet", "UserFiller.dll"]
+COPY wait-for.sh ./
+COPY --from=builder /app/publish/UserFiller /usr/bin/
+ENTRYPOINT ["UserFiller"]
