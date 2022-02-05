@@ -19,6 +19,12 @@ namespace WebApi.Models
             modelBuilder.Entity<Topic>().HasIndex(t => t.Name).IsUnique();
 
             modelBuilder.Entity<Message>().HasIndex(m => m.DateSolved);
+
+            modelBuilder.Entity<Script>().HasIndex(s => s.Name).IsUnique();
+            modelBuilder.Entity<Script>().HasIndex(s => s.Priority);
+            modelBuilder.Entity<Script>().HasIndex(s => s.IsEnabled);
+
+            modelBuilder.Entity<ScriptLog>().HasIndex(sl => sl.LogLevel);
         }
 
         public static void ConfigureIdentityModels(ModelBuilder builder)
