@@ -17,7 +17,7 @@ namespace WebApi.Models
         public bool SolveByReading { get; private set; }
 
         public ICollection<Message> Messages { get; private set; }
-
+        public ICollection<Script> Scripts { get; private set; }
         public static Topic Create(string name, Service service, bool solveByReading)
         {
             return new Topic()
