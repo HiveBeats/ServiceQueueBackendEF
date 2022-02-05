@@ -28,5 +28,7 @@ namespace WebApi.Models
         public DbSet<Service> Services { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Script> Scripts { get; set; }
+        public DbSet<ScriptLog> ScriptLogs { get; set; }
     }
 }
