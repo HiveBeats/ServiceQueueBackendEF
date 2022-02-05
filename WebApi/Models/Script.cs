@@ -21,5 +21,38 @@ namespace WebApi.Models
         public long TopicId { get; private set; }
         
         public ICollection<ScriptLog> ScriptLogs { get; private set; }
+
+        public static Script Create(Topic topic, string name, string body, int priority)
+        {
+            var dateCreated = DateTime.UtcNow;
+            return new Script()
+            {
+                Name = name,
+                Body = body,
+                Priority = priority,
+                IsEnabled = true,
+                DateCreated = dateCreated,
+                DateModified = dateCreated,
+                Topic = topic
+            };
+        }
+
+        public void ToggleEnabled()
+        {
+            IsEnabled = !IsEnabled;
+            DateModified = DateTime.UtcNow;
+        }
+
+        public void UpdateBody(string body)
+        {
+            Body = body;
+            DateModified = DateTime.UtcNow;
+        }
+
+        public void UpdatePriority(int priority)
+        {
+            Priority = priority;
+            DateModified = DateTime.UtcNow;
+        }
     }
 }
