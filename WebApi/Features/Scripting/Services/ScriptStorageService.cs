@@ -12,9 +12,10 @@ namespace WebApi.Features.Scripting.Services
     public interface IScriptService
     {
         Task<ScriptDto> CreateScriptForTopic(CreateScriptOnTopicRequest request);
-        Task<ScriptDto> UpdateScriptSettings(UpdateScriptSettingsRequest request);
-        Task<ScriptDto> UpdateScriptBody(UpdateScriptBodyRequest request);
+        Task<ScriptDto> UpdateScriptSettings(long id, UpdateScriptSettingsRequest request);
+        Task<ScriptDto> UpdateScriptBody(long id, UpdateScriptBodyRequest request);
         Task<IEnumerable<ScriptDto>> GetTopicScripts(long topic);
+        Task<ScriptDto> GetScript(long script);
         Task<IEnumerable<ScriptLogDto>> GetScriptLogs(long script);
     }
 
@@ -44,9 +45,9 @@ namespace WebApi.Features.Scripting.Services
             return new ScriptDto(script.Entity);
         }
 
-        public async Task<ScriptDto> UpdateScriptSettings(UpdateScriptSettingsRequest request)
+        public async Task<ScriptDto> UpdateScriptSettings(long id, UpdateScriptSettingsRequest request)
         {
-            var script = await _db.Scripts.FindAsync(request.Id);
+            var script = await _db.Scripts.FindAsync(id);
             if (script == null)
                 throw new InvalidOperationException("Такого скрипта не существует");
             
@@ -56,9 +57,9 @@ namespace WebApi.Features.Scripting.Services
             return new ScriptDto(script);
         }
 
-        public async Task<ScriptDto> UpdateScriptBody(UpdateScriptBodyRequest request)
+        public async Task<ScriptDto> UpdateScriptBody(long id, UpdateScriptBodyRequest request)
         {
-            var script = await _db.Scripts.FindAsync(request.Id);
+            var script = await _db.Scripts.FindAsync(id);
             if (script == null)
                 throw new InvalidOperationException("Такого скрипта не существует");
             
@@ -71,7 +72,16 @@ namespace WebApi.Features.Scripting.Services
         public async Task<IEnumerable<ScriptDto>> GetTopicScripts(long topic)
         {
             var scripts = await GetTopicScriptsByPriority(new InvokeScriptsOnTopicRequest() { TopicId = topic });
-            return scripts.Select(x => new ScriptDto(x));
+            return scripts.Select(x => new ScriptDto(x).ClearDetails());
+        }
+
+        public async Task<ScriptDto> GetScript(long script)
+        {
+            var entity = await _db.Scripts.FindAsync(script);
+            if (entity == null)
+                throw new InvalidOperationException("Такого скрипта не существует");
+            
+            return new ScriptDto(entity);
         }
 
         public async Task<IEnumerable<ScriptLogDto>> GetScriptLogs(long script)

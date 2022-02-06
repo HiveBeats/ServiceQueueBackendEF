@@ -22,5 +22,11 @@ namespace WebApi.Features.Scripting.Responses
         public bool IsEnabled { get; set; }
         public DateTime LastModified { get; set; }
         public DateTime Created { get; set; }
+
+        public ScriptDto ClearDetails()
+        {
+            Body = null;
+            return this;
+        }
     }
 }
