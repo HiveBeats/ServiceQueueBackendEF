@@ -24,6 +24,13 @@ namespace WebApi.Models
 
         public static Script Create(Topic topic, string name, string body, int priority)
         {
+            if (topic == null)
+                throw new InvalidOperationException("Can't create script without topic");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new InvalidOperationException("Can't create script with empty name");
+            if (body == null)
+                throw new ArgumentNullException("Body can't be null");
+            
             var dateCreated = DateTime.UtcNow;
             return new Script()
             {
@@ -45,6 +52,9 @@ namespace WebApi.Models
 
         public void UpdateBody(string body)
         {
+            if (body == null)
+                throw new ArgumentNullException("Body can't be null");
+            
             Body = body;
             DateModified = DateTime.UtcNow;
         }

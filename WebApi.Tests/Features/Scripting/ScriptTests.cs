@@ -44,7 +44,7 @@ namespace WebApi.Tests.Features.Scripting
         [Fact]
         public void ThrowCreatedWithoutBody()
         {
-            Assert.Throws<InvalidOperationException>(() => Script.Create(new Topic(), "argh", null, 0));
+            Assert.Throws<ArgumentNullException>(() => Script.Create(new Topic(), "argh", null, 0));
         }
         
         [Fact]
@@ -70,6 +70,13 @@ namespace WebApi.Tests.Features.Scripting
             
             Assert.NotEqual(body, script.Body);
             Assert.Equal(newBody, script.Body);
+        }
+
+        [Fact]
+        public void UpdateBodyWithNullThrows()
+        {
+            var script = Script.Create(new Topic(), "name", "body", 0);
+            Assert.Throws<ArgumentNullException>(() => script.UpdateBody(null));
         }
 
         [Fact]
