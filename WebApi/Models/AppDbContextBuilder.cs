@@ -23,6 +23,7 @@ namespace WebApi.Models
             modelBuilder.Entity<Script>().HasIndex(s => s.Name).IsUnique();
             modelBuilder.Entity<Script>().HasIndex(s => s.Priority);
             modelBuilder.Entity<Script>().HasIndex(s => s.IsEnabled);
+            modelBuilder.Entity<Script>().Property(s => s.LogLevel).HasConversion<int>();
             
             modelBuilder.Entity<ScriptLog>().HasIndex(sl => sl.LogLevel);
             modelBuilder.Entity<ScriptLog>().Property(sl => sl.LogLevel).HasConversion<int>();

@@ -16,7 +16,7 @@ namespace WebApi.Models
         public bool IsEnabled { get; private set; }
         public DateTime DateCreated { get; private set; }
         public DateTime DateModified { get; private set; }
-        
+        public LogLevel LogLevel { get; private set; }
         public Topic Topic { get; private set; }
         public long TopicId { get; private set; }
         
@@ -29,7 +29,7 @@ namespace WebApi.Models
             if (string.IsNullOrWhiteSpace(name))
                 throw new InvalidOperationException("Can't create script with empty name");
             if (body == null)
-                throw new ArgumentNullException("Body can't be null");
+                throw new ArgumentNullException("body");
             
             var dateCreated = DateTime.UtcNow;
             return new Script()
@@ -38,30 +38,27 @@ namespace WebApi.Models
                 Body = body,
                 Priority = priority,
                 IsEnabled = true,
+                LogLevel = LogLevel.Warning,
                 DateCreated = dateCreated,
                 DateModified = dateCreated,
                 Topic = topic
             };
         }
 
-        public void ToggleEnabled()
+        public void UpdateSettings(bool isEnabled, LogLevel logLevel, int priority)
         {
-            IsEnabled = !IsEnabled;
+            IsEnabled = isEnabled;
+            LogLevel = logLevel;
+            Priority = priority;
             DateModified = DateTime.UtcNow;
         }
-
+        
         public void UpdateBody(string body)
         {
             if (body == null)
-                throw new ArgumentNullException("Body can't be null");
+                throw new ArgumentNullException("body");
             
             Body = body;
-            DateModified = DateTime.UtcNow;
-        }
-
-        public void UpdatePriority(int priority)
-        {
-            Priority = priority;
             DateModified = DateTime.UtcNow;
         }
     }

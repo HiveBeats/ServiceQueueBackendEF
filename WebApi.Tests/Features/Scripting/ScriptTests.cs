@@ -24,6 +24,7 @@ namespace WebApi.Tests.Features.Scripting
             Assert.Equal(body, result.Body);
             Assert.Equal(priority, result.Priority);
             Assert.Equal(true, result.IsEnabled);
+            Assert.Equal(LogLevel.Warning, result.LogLevel);
             Assert.Equal(today, result.DateCreated.Date);
             Assert.Equal(today, result.DateModified.Date);
         }
@@ -46,19 +47,7 @@ namespace WebApi.Tests.Features.Scripting
         {
             Assert.Throws<ArgumentNullException>(() => Script.Create(new Topic(), "argh", null, 0));
         }
-        
-        [Fact]
-        public void ToggleEnabledBothWays()
-        {
-            var script = Script.Create(new Topic(), "name", "body", 0);
-            
-            script.ToggleEnabled();
-            Assert.Equal(false, script.IsEnabled);
-            
-            script.ToggleEnabled();
-            Assert.Equal(true, script.IsEnabled);
-        }
-        
+
         [Fact]
         public void UpdateBodyUpdates()
         {
@@ -80,16 +69,19 @@ namespace WebApi.Tests.Features.Scripting
         }
 
         [Fact]
-        public void UpdatePriorityUpdates()
+        public void UpdateSettingsUpdates()
         {
             var priority = 0;
             var script = Script.Create(new Topic(), "name", "body", priority);
 
             var newPriority = 2;
-            script.UpdatePriority(newPriority);
+            var newLogLevel = LogLevel.Debug;
             
-            Assert.NotEqual(priority, script.Priority);
+            script.UpdateSettings(false, newLogLevel, newPriority);
+            
             Assert.Equal(newPriority, script.Priority);
+            Assert.Equal(false, script.IsEnabled);
+            Assert.Equal(newLogLevel, script.LogLevel);
         }
     }
 }

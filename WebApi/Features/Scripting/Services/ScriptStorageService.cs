@@ -12,9 +12,8 @@ namespace WebApi.Features.Scripting.Services
     public interface IScriptService
     {
         Task<ScriptDto> CreateScriptForTopic(CreateScriptOnTopicRequest request);
-        Task<ScriptDto> EnableOrDisableScript(EnableOrDisableScriptRequest request);
+        Task<ScriptDto> UpdateScriptSettings(UpdateScriptSettingsRequest request);
         Task<ScriptDto> UpdateScriptBody(UpdateScriptBodyRequest request);
-        Task<ScriptDto> UpdateScriptPriority(UpdateScriptPriorityRequest request);
         Task<IEnumerable<ScriptDto>> GetTopicScripts(long topic);
         Task<IEnumerable<ScriptLogDto>> GetScriptLogs(long script);
     }
@@ -45,13 +44,13 @@ namespace WebApi.Features.Scripting.Services
             return new ScriptDto(script.Entity);
         }
 
-        public async Task<ScriptDto> EnableOrDisableScript(EnableOrDisableScriptRequest request)
+        public async Task<ScriptDto> UpdateScriptSettings(UpdateScriptSettingsRequest request)
         {
-            var script = await _db.Scripts.FindAsync(request.ScriptId);
+            var script = await _db.Scripts.FindAsync(request.Id);
             if (script == null)
                 throw new InvalidOperationException("Такого скрипта не существует");
             
-            script.ToggleEnabled();
+            script.UpdateSettings(request.IsEnabled, request.LogLevel, request.Priority);
             await _db.SaveChangesAsync();
 
             return new ScriptDto(script);
@@ -64,18 +63,6 @@ namespace WebApi.Features.Scripting.Services
                 throw new InvalidOperationException("Такого скрипта не существует");
             
             script.UpdateBody(request.Body);
-            await _db.SaveChangesAsync();
-
-            return new ScriptDto(script);
-        }
-
-        public async Task<ScriptDto> UpdateScriptPriority(UpdateScriptPriorityRequest request)
-        {
-            var script = await _db.Scripts.FindAsync(request.Id);
-            if (script == null)
-                throw new InvalidOperationException("Такого скрипта не существует");
-            
-            script.UpdatePriority(request.Priority);
             await _db.SaveChangesAsync();
 
             return new ScriptDto(script);
